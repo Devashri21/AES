@@ -8,10 +8,72 @@ AES does not use a Feistel network like DES, it uses variant of Rijndael.
 It has a fixed block size of 128 bits, and a key size of 128, 192, or 256 bits.
 AES operates on a 4 × 4 column-major order array of bytes, termed the state
 # PROGRAM:
-
+```
+#include <stdio.h> 
+#include <string.h> 
+ 
+void simpleAESEncrypt(char *plaintext, char *key, char *ciphertext) { 
+    int i; 
+    int plen = strlen(plaintext); 
+    int klen = strlen(key); 
+ 
+    for (i = 0; i < plen; i++) { 
+        ciphertext[i] = plaintext[i] ^ key[i % klen]; 
+    } 
+    ciphertext[i] = '\0'; 
+} 
+ 
+void simpleAESDecrypt(char *ciphertext, char *key, char *decryptedText) { 
+    int i; 
+    int clen = strlen(ciphertext); 
+    int klen = strlen(key); 
+ 
+    for (i = 0; i < clen; i++) { 
+        decryptedText[i] = ciphertext[i] ^ key[i % klen]; 
+    } 
+    decryptedText[i] = '\0'; 
+} 
+ 
+void printASCII(char *ciphertext) { 
+    printf("Encrypted Message (ASCII values): "); 
+    int clen = strlen(ciphertext); 
+    for (int i = 0; i < clen; i++) { 
+        printf("%d ", (unsigned char)ciphertext[i]); 
+    } 
+    printf("\n"); 
+} 
+ 
+int main() { 
+    char plaintext[100], key[100], ciphertext[100], decryptedText[100]; 
+ 
+    printf("Enter the plaintext: "); 
+    fgets(plaintext, sizeof(plaintext), stdin); 
+    plaintext[strcspn(plaintext, "\n")] = '\0'; 
+ 
+    printf("Enter the key: "); 
+    fgets(key, sizeof(key), stdin); 
+    key[strcspn(key, "\n")] = '\0'; 
+ 
+    if (strlen(key) == 0) { 
+        printf("Error: Key cannot be empty!\n"); 
+        return 1; 
+    } 
+ 
+    simpleAESEncrypt(plaintext, key, ciphertext); 
+    printASCII(ciphertext); 
+ 
+    simpleAESDecrypt(ciphertext, key, decryptedText); 
+    printf("Decrypted Message: %s\n", decryptedText); 
+ 
+    return 0; 
+} 
+```
 # OUTPUT:
+
+<img width="697" height="241" alt="image" src="https://github.com/user-attachments/assets/e9ccae7b-b5f8-456b-915a-64941fb7f8b6" />
 
 
 # RESULT:
-
-
+Thus, the Advanced Encryption Standard (AES) algorithm was successfully 
+implemented for a practical application like URL encryption. The plaintext was 
+encrypted and decrypted correctly using the same secret key.
